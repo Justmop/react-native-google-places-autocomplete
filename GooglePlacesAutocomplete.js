@@ -561,6 +561,9 @@ export default class GooglePlacesAutocomplete extends Component {
   };
 
   _onChangeText = text => {
+    if (!text) {
+      this.setState({ loading: false });
+    }
     if (text.length >= this.props.minLength) {
       this.setState({loading:true});
     }
