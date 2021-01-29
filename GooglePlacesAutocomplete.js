@@ -537,7 +537,7 @@ export default class GooglePlacesAutocomplete extends Component {
         this.setState({loading:false});
       };
       const queryString = Qs.stringify(this.props.query);
-      
+
       const url = !this.props.filterSearch ? `https://maps.googleapis.com/maps/api/place/autocomplete/json?&radius=50000&location=${this.props.latitude},${this.props.longitude}&input=` :
       'https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=';
       request.open(
@@ -561,6 +561,9 @@ export default class GooglePlacesAutocomplete extends Component {
   };
 
   _onChangeText = text => {
+    if (!text) {
+      this.setState({ loading: false });
+    }
     if (text.length >= this.props.minLength) {
       this.setState({loading:true});
     }
@@ -586,7 +589,7 @@ export default class GooglePlacesAutocomplete extends Component {
   };
 
   _getRowLoader() {
-    return <ActivityIndicator animating={true} size="small" />;
+    return <ActivityIndicator animating={true} color={Platform.OS === 'android' ? "#49a361" : undefined} size="small" />;
   }
 
   _renderRowData = rowData => {
@@ -850,7 +853,7 @@ export default class GooglePlacesAutocomplete extends Component {
                 this.props.suppressDefaultStyles
                   ? {}
                   : defaultStyles.textInput,
-                  this.props.styles.textInput,{maxHeight:31}                
+                  this.props.styles.textInput,{maxHeight:31}
               ]}
               value={this.state.text}
               placeholder={this.props.placeholder}
