@@ -302,7 +302,7 @@ export default class GooglePlacesAutocomplete extends Component {
           })
       );
 
-      if (this.props.query.origin !== null) {
+      if (this.props.query.origin) {
         request.setRequestHeader("Referer", this.props.query.origin);
       }
 
@@ -470,7 +470,7 @@ export default class GooglePlacesAutocomplete extends Component {
       }
 
       request.open("GET", url);
-      if (this.props.query.origin !== null) {
+      if (this.props.query.origin) {
         request.setRequestHeader("Referer", this.props.query.origin);
       }
 
@@ -529,7 +529,7 @@ export default class GooglePlacesAutocomplete extends Component {
         ? `https://maps.googleapis.com/maps/api/place/autocomplete/json?&radius=50000&location=${this.props.latitude},${this.props.longitude}&input=`
         : "https://maps.googleapis.com/maps/api/place/autocomplete/json?&input=";
       request.open("GET", url + encodeURIComponent(text) + "&" + queryString);
-      if (this.props.query.origin !== null) {
+      if (this.props.query.origin) {
         request.setRequestHeader("Referer", this.props.query.origin);
       }
 
