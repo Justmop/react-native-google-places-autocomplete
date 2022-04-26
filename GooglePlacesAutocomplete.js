@@ -634,11 +634,11 @@ export default class GooglePlacesAutocomplete extends Component {
     return (
       <TouchableHighlight
         testID={`places_list_item_${sectionID}`}
-        style={{
+        style={[{
           width: WINDOW.width,
           height: 72,
           justifyContent: "center",
-        }}
+        }, this.props.styles.rowContainer]}
         onPress={() => this._onPress(rowData)}
         underlayColor={this.props.listUnderlayColor || "#c8c7cc"}
       >
@@ -855,8 +855,8 @@ export default class GooglePlacesAutocomplete extends Component {
             {this._renderRightButton()}
           </View>
         )}
-        {this._getFlatList()}
         {this.props.children}
+        {this._getFlatList()}
       </View>
     );
   }
