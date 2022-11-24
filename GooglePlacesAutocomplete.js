@@ -4,7 +4,6 @@ import {
   TextInput,
   View,
   FlatList,
-  ScrollView,
   Image,
   Text,
   StyleSheet,
@@ -71,6 +70,7 @@ export default class GooglePlacesAutocomplete extends Component {
   _isMounted = false;
   _results = [];
   _requests = [];
+  textInput = null;
   _debouncing = undefined;
 
   constructor(props) {
@@ -173,7 +173,8 @@ export default class GooglePlacesAutocomplete extends Component {
    * @public
    */
   triggerFocus = () => {
-    if (this.refs.textInput) this.refs.textInput.focus();
+    
+    if (this.textInput) this.textInput.focus();
   };
 
   /**
@@ -181,7 +182,7 @@ export default class GooglePlacesAutocomplete extends Component {
    * @public
    */
   triggerBlur = () => {
-    if (this.refs.textInput) this.refs.textInput.blur();
+    if (this.textInput) this.textInput.blur();
   };
 
   getCurrentLocation = () => {
@@ -805,7 +806,7 @@ export default class GooglePlacesAutocomplete extends Component {
             backgroundColor: isSearchListOpen ? "white" : "transparent",
           },
         ]}
-        pointerEvents="box-none"
+        // pointerEvents="box-none"
       >
         {!this.props.textInputHide && (
           <View
@@ -829,7 +830,7 @@ export default class GooglePlacesAutocomplete extends Component {
             >
               <TextInput
                 testID="google_places_auto_complete"
-                ref="textInput"
+                ref={ref => this.textInput  = ref}
                 editable={this.props.editable}
                 returnKeyType={this.props.returnKeyType}
                 autoFocus={this.props.autoFocus}
