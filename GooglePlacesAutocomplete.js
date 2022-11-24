@@ -71,6 +71,7 @@ export default class GooglePlacesAutocomplete extends Component {
   _isMounted = false;
   _results = [];
   _requests = [];
+  _debouncing = undefined;
 
   constructor(props) {
     super(props);
@@ -116,9 +117,10 @@ export default class GooglePlacesAutocomplete extends Component {
   };
 
   componentWillMount() {
-    this._request = this.props.debounce
-      ? debounce(this._request, this.props.debounce)
-      : this._request;
+    if (this.props.debounce) {
+      this._debouncing = debounce(this._request, this.props.debounce);
+      this._request = this._debouncing;
+    }
   }
 
   componentDidMount() {
@@ -155,6 +157,10 @@ export default class GooglePlacesAutocomplete extends Component {
   componentWillUnmount() {
     this._abortRequests();
     this._isMounted = false;
+
+    if (this._debouncing) {
+      this._debouncing.cancel();
+    }
   }
 
   _abortRequests = () => {
