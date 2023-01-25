@@ -173,7 +173,6 @@ export default class GooglePlacesAutocomplete extends Component {
    * @public
    */
   triggerFocus = () => {
-    
     if (this.textInput) this.textInput.focus();
   };
 
@@ -641,11 +640,14 @@ export default class GooglePlacesAutocomplete extends Component {
     return (
       <TouchableHighlight
         testID={`places_list_item_${sectionID}`}
-        style={[{
-          width: WINDOW.width,
-          height: 72,
-          justifyContent: "center",
-        }, this.props.styles.rowContainer]}
+        style={[
+          {
+            width: WINDOW.width,
+            height: 72,
+            justifyContent: "center",
+          },
+          this.props.styles.rowContainer,
+        ]}
         onPress={() => this._onPress(rowData)}
         underlayColor={this.props.listUnderlayColor || "#c8c7cc"}
       >
@@ -659,12 +661,15 @@ export default class GooglePlacesAutocomplete extends Component {
         >
           <Image
             source={require("../../src/images/pin.png")}
-            style={{
-              width: 24,
-              height: 24,
-              marginRight: 8,
-              marginLeft: 16,
-            }}
+            style={[
+              {
+                width: 24,
+                height: 24,
+                marginRight: 8,
+                marginLeft: 16,
+              },
+              this.props.styles.rowPinImage,
+            ]}
           />
           {this._renderRowData(rowData)}
           {this._renderLoader(rowData)}
@@ -830,7 +835,7 @@ export default class GooglePlacesAutocomplete extends Component {
             >
               <TextInput
                 testID="google_places_auto_complete"
-                ref={ref => this.textInput  = ref}
+                ref={(ref) => (this.textInput = ref)}
                 editable={this.props.editable}
                 returnKeyType={this.props.returnKeyType}
                 autoFocus={this.props.autoFocus}
