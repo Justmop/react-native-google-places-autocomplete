@@ -637,9 +637,13 @@ export default class GooglePlacesAutocomplete extends Component {
   };
 
   _renderRow = (rowData = {}, sectionID, rowID) => {
+    const testID = `places_list_item_${sectionID}`;
+
     return (
       <TouchableHighlight
-        testID={`places_list_item_${sectionID}`}
+        {...(Platform.OS === "ios"
+          ? { testID }
+          : { accessibilityLabel: testID })}
         style={[
           {
             width: WINDOW.width,
