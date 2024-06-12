@@ -595,6 +595,7 @@ export default class GooglePlacesAutocomplete extends Component {
         this._results = [];
         this.setState({
           dataSource: this.buildRowsFromResults([]),
+          loading: false
         });
       }
 
