@@ -228,6 +228,30 @@ export default class GooglePlacesAutocomplete extends Component {
     );
   };
 
+  _onPressWithProps = (rowData) =>{
+ 
+    if (rowData.isLoading === true) {
+      // already requesting
+      return;
+    }
+
+    // this._abortRequests();
+
+    // display loader
+    this._enableRowLoader(rowData);
+
+    // fetch details
+    this.props.placesAutocompleteOnPress(rowData);
+    if (this._isMounted === true) {
+      this._disableRowLoaders();
+      this._onBlur();
+      this.setState({
+        text: this._renderDescription(rowData),
+      });
+      delete rowData.isLoading;
+    }
+  }
+
   _onPress = (rowData) => {
     if (
       rowData.isPredefinedPlace !== true &&
@@ -549,6 +573,35 @@ export default class GooglePlacesAutocomplete extends Component {
     }
   };
 
+  requestTimer;
+
+
+  _requestWithProps(text){
+    if(this.requestTimer) clearTimeout(this.requestTimer);
+
+    this.requestTimer = setTimeout(async () => {
+    if (text.length >= this.props.minLength) {
+
+     
+        const results = await this.props.placesAutocompleteRequest(text);
+        this._results = results;
+        this.setState({
+          dataSource: this.buildRowsFromResults(results),
+        });
+        this.setState({ loading: false });
+
+        
+      } else {
+        this._results = [];
+        this.setState({
+          dataSource: this.buildRowsFromResults([]),
+          loading: false
+        });
+      }
+
+    }, this.props.debounceForPropRequest || 0);
+  }
+
   _onChangeText = (text) => {
     if (!text) {
       this.setState({ loading: false });
@@ -556,7 +609,11 @@ export default class GooglePlacesAutocomplete extends Component {
     if (text.length >= this.props.minLength) {
       this.setState({ loading: true });
     }
-    this._request(text);
+    if(this.props.placesAutocompleteRequest){
+      this._requestWithProps(text);  
+    }else{
+      this._request(text);
+    }
 
     this.setState({
       text: text,
@@ -653,7 +710,7 @@ export default class GooglePlacesAutocomplete extends Component {
           },
           this.props.styles.rowContainer,
         ]}
-        onPress={() => this._onPress(rowData)}
+        onPress={() => this.props.placesAutocompleteRequest && this.props.placesAutocompleteOnPress ? this._onPressWithProps(rowData): this._onPress(rowData)}
         underlayColor={this.props.listUnderlayColor || "#c8c7cc"}
       >
         <View
